@@ -1,0 +1,73 @@
+﻿@page "/"
+
+   
+<body style="background-image: linear-gradient(180deg, rgb(118, 245, 232) 40%, rgb(56, 255, 162) 70%); ">
+    <style>
+        div {
+            margin-bottom: 10px;
+            font: bold;
+        }
+
+        label {
+            display: inline-block;
+            width: 90px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+    @if (showlogin)
+    {
+<div id="loginDiv">
+    <h1>LOGIN</h1>
+    <label for="User">Username :</label> &nbsp
+    <input type="text" />
+    <br />
+    <label for="Pass"> Password :</label> &nbsp
+    <input type="password" />
+    <br />
+    <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
+    <button @onclick="Signup" id="btnsignup" class="btn btn-primary"> Sign up </button>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
+    }
+    @if(showsignup)
+    { 
+     <div id="SignupDiv" style="vertical-align:auto">
+        <h1>Sign up</h1>
+        <br />
+        <label for="User">Username:</label>&nbsp <input id="btnuser"><br />
+        <label for="email">E-mail adress:</label>&nbsp <input id="btnemail"><br />
+        <label for="Birth">Date of birth:</label>&nbsp <input id="btnbirth"><br />
+        <label for="Pass">Password:</label>&nbsp <input type="password" id="btnpass"><br />
+        <label for="ConPass">Confirm Password:</label>&nbsp <input type="password" id="btnconpass"><br />
+         <button class="btn btn-primary">Sign up</button>
+        <button @onclick="cancel" class="btn btn-primary">Cancel</button>
+     </div>
+     }
+    
+</body>
+    @code {
+        private bool showsignup = false;
+        private bool showlogin = true;
+        void TryLogin()
+        {
+
+        }
+
+        void Signup()
+        {
+            showsignup = true;
+            showlogin = false;
+        }
+
+        void cancel()
+        {
+            showsignup = false;
+            showlogin = true;
+        }
+    }
