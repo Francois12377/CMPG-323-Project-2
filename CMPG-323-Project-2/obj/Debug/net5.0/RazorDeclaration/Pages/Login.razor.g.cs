@@ -82,6 +82,27 @@ using CMPG_323_Project_2.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+using Microsoft.Extensions.Configuration;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+using DataLibrary;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+using CMPG_323_Project_2.Models;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Login : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -91,31 +112,52 @@ using CMPG_323_Project_2.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 54 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
-           
-        private bool showsignup = false;
-        private bool showlogin = true;
-        void TryLogin()
-        {
+#line 61 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+       
+    UsersModel user = new UsersModel();
 
-        }
 
-        void Signup()
-        {
-            showsignup = true;
-            showlogin = false;
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        string sql = "select * from useraccount";
+        await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+    }
 
-        void cancel()
-        {
-            showsignup = false;
-            showlogin = true;
-        }
-    
+    private async Task InsertUser()
+    {
+        string sql = "insert into useraccount (Username, Password, Email, Age) values (@Username, @Password, @Email, @Age); ";
+
+        await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
+    }
+
+    void TryLogin()
+    {
+
+    }
+
+    private bool showsignup = false;
+    private bool showlogin = true;
+
+
+
+
+    void TrySignup()
+    {
+        showsignup = true;
+        showlogin = false;
+    }
+
+    void cancel()
+    {
+        showsignup = false;
+        showlogin = true;
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDataAccess _data { get; set; }
     }
 }
 #pragma warning restore 1591

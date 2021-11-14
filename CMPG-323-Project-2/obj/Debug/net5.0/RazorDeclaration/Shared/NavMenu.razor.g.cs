@@ -90,7 +90,7 @@ using CMPG_323_Project_2.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 19 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Shared\NavMenu.razor"
+#line 28 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

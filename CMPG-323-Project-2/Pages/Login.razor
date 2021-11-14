@@ -1,6 +1,12 @@
 ﻿@page "/"
 
-   
+@using Microsoft.Extensions.Configuration
+@using DataLibrary
+@using CMPG_323_Project_2.Models
+@inject IDataAccess _data
+@inject IConfiguration _config
+
+
 <body style="background-image: linear-gradient(180deg, rgb(118, 245, 232) 40%, rgb(56, 255, 162) 70%); ">
     <style>
         div {
@@ -17,57 +23,84 @@
     </style>
     @if (showlogin)
     {
-<div id="loginDiv">
-    <h1>LOGIN</h1>
-    <label for="User">Username :</label> &nbsp
-    <input type="text" />
-    <br />
-    <label for="Pass"> Password :</label> &nbsp
-    <input type="password" />
-    <br />
-    <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
-    <button @onclick="Signup" id="btnsignup" class="btn btn-primary"> Sign up </button>
+        <div id="loginDiv">
+            <h1>LOGIN</h1>
+            <label for="User">Username :</label> &nbsp
+            <input type="text" />
+            <br />
+            <label for="Pass"> Password :</label> &nbsp
+            <input type="password" />
+            <br />
+            <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
+            <button @onclick="TrySignup" id="btnsignup" class="btn btn-primary"> Sign up </button>
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-</div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
     }
-    @if(showsignup)
+    @if (showsignup)
     { 
-     <div id="SignupDiv" style="vertical-align:auto">
-        <h1>Sign up</h1>
-        <br />
-        <label for="User">Username:</label>&nbsp <input id="btnuser"><br />
-        <label for="email">E-mail adress:</label>&nbsp <input id="btnemail"><br />
-        <label for="Birth">Date of birth:</label>&nbsp <input id="btnbirth"><br />
-        <label for="Pass">Password:</label>&nbsp <input type="password" id="btnpass"><br />
-        <label for="ConPass">Confirm Password:</label>&nbsp <input type="password" id="btnconpass"><br />
-         <button class="btn btn-primary">Sign up</button>
-        <button @onclick="cancel" class="btn btn-primary">Cancel</button>
-     </div>
-     }
-    
-</body>
-    @code {
-        private bool showsignup = false;
-        private bool showlogin = true;
-        void TryLogin()
-        {
-
-        }
-
-        void Signup()
-        {
-            showsignup = true;
-            showlogin = false;
-        }
-
-        void cancel()
-        {
-            showsignup = false;
-            showlogin = true;
-        }
+        
+       <div id="SignupDiv" style="vertical-align:auto">
+            <h1>Sign up</h1>
+            <br />
+            <label for="User">Username:</label>&nbsp 
+           <input id="btnuser" @bind-value ="user.Username" /><br />
+            <label for="email">E-mail adress:</label>&nbsp 
+           <input type="email" id="btnemail" @bind-value ="user.Email" /><br />
+            <label for="Birth">Age:</label>&nbsp 
+           <input id="btnAge" @bind-value ="user.Age" /><br />
+            <label for="Pass">Password:</label>&nbsp 
+           <input type="password" id="btnpass" /><br />
+            <label for="ConPass">Confirm Password:</label>&nbsp 
+           <input type="password" id="btnconpass" @bind-value ="user.Password" /><br />
+            <button @onclick="InsertUser" type="submit" class="btn btn-primary">Sign up</button>
+            <button @onclick="cancel" class="btn btn-primary">Cancel</button>
+        </div>
     }
+
+</body>
+
+@code {
+    UsersModel user = new UsersModel();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        string sql = "select * from useraccount";
+        await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+    }
+
+    private async Task InsertUser()
+    {
+        string sql = "insert into useraccount (Username, Password, Email, Age) values (@Username, @Password, @Email, @Age); ";
+
+        await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
+    }
+
+    void TryLogin()
+    {
+
+    }
+
+    private bool showsignup = false;
+    private bool showlogin = true;
+
+
+
+
+    void TrySignup()
+    {
+        showsignup = true;
+        showlogin = false;
+    }
+
+    void cancel()
+    {
+        showsignup = false;
+        showlogin = true;
+    }
+}
