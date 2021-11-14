@@ -112,7 +112,7 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 61 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+#line 71 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
        
     UsersModel user = new UsersModel();
 
@@ -125,7 +125,8 @@ using CMPG_323_Project_2.Models;
 
     private async Task InsertUser()
     {
-        string sql = "insert into useraccount (Username, Password, Email, Age) values (@Username, @Password, @Email, @Age); ";
+        
+        string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
         await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
     }
