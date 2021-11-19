@@ -112,20 +112,25 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 71 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+#line 84 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
        
     UsersModel user = new UsersModel();
 
-
+    List<UsersModel> users; 
+    private bool showsignup = false;
+    private bool showlogin = true;
+    private bool YES = false;
     protected override async Task OnInitializedAsync()
     {
-        string sql = "select * from useraccount";
-        await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        string sql2 = "select * from useraccount";
+        users = await _data.LoadData<UsersModel, dynamic>(sql2, new { }, _config.GetConnectionString("default"));
+
     }
 
     private async Task InsertUser()
     {
-        
+
+
         string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
         await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
@@ -133,11 +138,17 @@ using CMPG_323_Project_2.Models;
 
     void TryLogin()
     {
-
+       
+        foreach (var u in users)
+        {
+            if (u.Username == user.Username)
+            {
+                YES = true;
+            }
+        }
     }
 
-    private bool showsignup = false;
-    private bool showlogin = true;
+
 
 
 

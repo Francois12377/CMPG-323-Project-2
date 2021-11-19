@@ -8,6 +8,11 @@
 
 
 <body style="background-image: linear-gradient(180deg, rgb(118, 245, 232) 40%, rgb(56, 255, 162) 70%); ">
+
+    @if (users == null)
+    {
+        <p><em>Loading... </em></p>
+    }
     <style>
         div {
             margin-bottom: 10px;
@@ -21,16 +26,24 @@
             font-weight: bold;
         }
     </style>
+
+    @if (YES == true)
+    {
+        <h1>YESSSSSSSSSSSSSS</h1>
+        <br />
+    }
+
     @if (showlogin)
     {
         <div id="loginDiv">
             <h1>LOGIN</h1>
             <label for="User">Username :</label> &nbsp
-            <input type="text" />
+            <input type="text" @bind-value="user.Username" />
             <br />
             <label for="Pass"> Password :</label> &nbsp
             <input type="password" />
             <br />
+
             <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
             <button @onclick="TrySignup" id="btnsignup" class="btn btn-primary"> Sign up </button>
 
@@ -42,28 +55,28 @@
         </div>
     }
     @if (showsignup)
-    { 
-<EditForm Model="@user" OnValidSubmit="@InsertUser">
-    <DataAnnotationsValidator /> 
-    <h1>Sign up</h1>
-    <ValidationSummary />
-    <div id="SignupDiv" style="vertical-align:auto">
+    {
+        <EditForm Model="@user" OnValidSubmit="@InsertUser">
+            <DataAnnotationsValidator />
+            <h1>Sign up</h1>
+            <ValidationSummary />
+            <div id="SignupDiv" style="vertical-align:auto">
 
-        <br />
-        <label for="User">Username:</label>&nbsp
-        <input id="textuser" @bind-value="user.Username" /><br />
-        <label for="email">E-mail adress:</label>&nbsp
-        <input type="email" id="textemail" @bind-value="user.Email" /><br />
-        <label for="Birth">Date of birth:</label>&nbsp
-        <input  @bind-value="user.Age" placeholder="YYYY-MM-DD"/><br />
-        <label for="Pass">Password:</label>&nbsp
-        <input type="password" id="btnpass" @bind-value="user.Password" /><br />
-        <label for="ConPass">Confirm Password:</label>&nbsp
-        <input type="password" id="btnconpass" @bind-value="user.confirmpass" /><br />
-        <button type="submit" class="btn btn-primary">Sign up</button>
-        <button @onclick="cancel" class="btn btn-primary">Cancel</button>
-    </div>
-</EditForm>
+                <br />
+                <label for="User">Username:</label>&nbsp
+                <input id="textuser" @bind-value="user.Username" /><br />
+                <label for="email">E-mail adress:</label>&nbsp
+                <input type="email" id="textemail" @bind-value="user.Email" /><br />
+                <label for="Birth">Date of birth:</label>&nbsp
+                <input @bind-value="user.Age" placeholder="YYYY-MM-DD" /><br />
+                <label for="Pass">Password:</label>&nbsp
+                <input type="password" id="btnpass" @bind-value="user.Password" /><br />
+                <label for="ConPass">Confirm Password:</label>&nbsp
+                <input type="password" id="btnconpass" @bind-value="user.confirmpass" /><br />
+                <button type="submit" class="btn btn-primary">Sign up</button>
+                <button @onclick="cancel" class="btn btn-primary">Cancel</button>
+            </div>
+        </EditForm>
     }
 
 </body>
@@ -71,16 +84,21 @@
 @code {
     UsersModel user = new UsersModel();
 
-
+    List<UsersModel> users; 
+    private bool showsignup = false;
+    private bool showlogin = true;
+    private bool YES = false;
     protected override async Task OnInitializedAsync()
     {
-        string sql = "select * from useraccount";
-        await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        string sql2 = "select * from useraccount";
+        users = await _data.LoadData<UsersModel, dynamic>(sql2, new { }, _config.GetConnectionString("default"));
+
     }
 
     private async Task InsertUser()
     {
-        
+
+
         string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
         await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
@@ -88,11 +106,17 @@
 
     void TryLogin()
     {
-
+       
+        foreach (var u in users)
+        {
+            if (u.Username == user.Username)
+            {
+                YES = true;
+            }
+        }
     }
 
-    private bool showsignup = false;
-    private bool showlogin = true;
+
 
 
 

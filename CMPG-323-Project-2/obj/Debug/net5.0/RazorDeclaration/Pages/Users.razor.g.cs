@@ -112,18 +112,37 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 25 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Users.razor"
+#line 39 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Users.razor"
+               
+            UsersModel user = new UsersModel();
+
+
+            List<UsersModel> users;
+            protected override async Task OnInitializedAsync()
+            {
+                string sql = "select * from useraccount";
+                users = await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+            }
+
+            private bool show = false;
+            private void Itworks()
+            {
+                foreach(var u in users)
+                {
+                    if (u.Username == "Francois")
+                    {
+                        show = true;
+                    }
+                }
+
+            }
+
             
-    List<UsersModel> users;
-    protected override async Task OnInitializedAsync()
-    {
-        string sql = "select * from useraccount";
-        users = await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
-    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Nav { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDataAccess _data { get; set; }
     }
