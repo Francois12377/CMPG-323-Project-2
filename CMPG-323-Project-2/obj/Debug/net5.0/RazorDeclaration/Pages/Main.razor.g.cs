@@ -82,6 +82,27 @@ using CMPG_323_Project_2.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+using Microsoft.Extensions.Configuration;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+using DataLibrary;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+using CMPG_323_Project_2.Models;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/main")]
     public partial class Main : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -90,6 +111,62 @@ using CMPG_323_Project_2.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 23 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+       
+    
+    ImageModel Images = new ImageModel();
+    UsersModel user = new UsersModel();
+    List<ImageModel> pictures;
+    List<UsersModel> users;
+    private string Uname = Login.Name;
+    private string pic;
+    public static string Image { get; set; }
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        string sql = "select * from images";
+        pictures = await _data.LoadData<ImageModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        string sql2 = "select ProfilePicture from useraccount WHERE Username = @username";
+        users = await _data.LoadData<UsersModel, dynamic>(sql2, new { username = Uname }, _config.GetConnectionString("default"));
+
+        Image =  $"data:image/png;base64,{users[0].GetType()}";
+
+
+
+
+    }
+
+    private async Task FileChange(InputFileChangeEventArgs fileChangeEvent)
+    {
+        var file = fileChangeEvent.File;
+
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+        pic = Convert.ToBase64String(buffer);
+        Image = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+
+        string sql = "insert into images(image_name,Image,Username) values (@imagename,@image,@username); ";
+
+
+    }
+
+    private async Task Upload()
+    {
+        string sql2 = "update useraccount SET profilepicture = @image WHERE Username = @username";
+
+        await _data.SaveData(sql2, new { image = Image, username = Uname }, _config.GetConnectionString("default"));
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Nav { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDataAccess _data { get; set; }
     }
 }
 #pragma warning restore 1591

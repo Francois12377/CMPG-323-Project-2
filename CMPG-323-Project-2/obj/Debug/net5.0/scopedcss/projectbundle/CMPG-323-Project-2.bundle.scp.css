@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-    .top-row[b-kqz724twsc]  a, .top-row .btn-link[b-kqz724twsc] {
+    .top-row a[b-kqz724twsc], .top-row .btn-link[b-kqz724twsc] {
         white-space: nowrap;
         margin-left: 1.5rem;
     }
@@ -105,7 +105,7 @@
         padding-bottom: 1rem;
     }
 
-    .nav-item[b-pfgf51b5su]  a {
+    .nav-item  a[b-pfgf51b5su] {
         color: #0094ff;
         border-radius: 4px;
         height: 3rem;
@@ -114,12 +114,12 @@
         line-height: 3rem;
     }
 
-.nav-item[b-pfgf51b5su]  a.active {
+.nav-item a.active[b-pfgf51b5su] {
     background-color: rgba(255,255,255,0.25);
     color: white;
 }
 
-.nav-item[b-pfgf51b5su]  a:hover {
+.nav-item a:hover[b-pfgf51b5su] {
     background-color: rgba(255,255,255,0.1);
     color: white;
 }

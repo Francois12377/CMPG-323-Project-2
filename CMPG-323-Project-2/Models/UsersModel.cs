@@ -28,5 +28,7 @@ namespace CMPG_323_Project_2.Models
         [Required]
         
         public string Age { get; set; }
+
+        public string Profilepic { get; set; }
     }
 }

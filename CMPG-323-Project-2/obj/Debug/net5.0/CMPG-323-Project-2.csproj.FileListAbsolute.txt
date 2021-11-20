@@ -70,3 +70,4 @@ C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project
 C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\bin\Debug\net5.0\DataLibrary.pdb
 C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\obj\Debug\net5.0\RazorDeclaration\Pages\Users.razor.g.cs
 C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\obj\Debug\net5.0\Razor\Pages\Users.razor.g.cs
+C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\bin\Debug\net5.0\BlazorInputFile.dll

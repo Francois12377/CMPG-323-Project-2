@@ -112,7 +112,7 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 39 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Users.razor"
+#line 32 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Users.razor"
                
             UsersModel user = new UsersModel();
 
@@ -124,18 +124,7 @@ using CMPG_323_Project_2.Models;
                 users = await _data.LoadData<UsersModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
             }
 
-            private bool show = false;
-            private void Itworks()
-            {
-                foreach(var u in users)
-                {
-                    if (u.Username == "Francois")
-                    {
-                        show = true;
-                    }
-                }
-
-            }
+           
 
             
 

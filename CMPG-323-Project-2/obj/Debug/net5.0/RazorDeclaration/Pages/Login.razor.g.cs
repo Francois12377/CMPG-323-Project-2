@@ -116,10 +116,13 @@ using CMPG_323_Project_2.Models;
        
     UsersModel user = new UsersModel();
 
-    List<UsersModel> users; 
+    List<UsersModel> users;
     private bool showsignup = false;
     private bool showlogin = true;
     private bool YES = false;
+    public static string Name;
+    
+
     protected override async Task OnInitializedAsync()
     {
         string sql2 = "select * from useraccount";
@@ -133,18 +136,25 @@ using CMPG_323_Project_2.Models;
 
         string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
-        await _data.SaveData(sql, new {Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age}, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age }, _config.GetConnectionString("default"));
     }
 
     void TryLogin()
     {
-       
+     
+
         foreach (var u in users)
         {
             if (u.Username == user.Username)
             {
-                YES = true;
+                Name = u.Username;
+                Main.Image = Convert.ToString(u.Profilepic)  ;
+                Nav.NavigateTo("/main");
             }
+                else
+                {
+                  
+                }
         }
     }
 
@@ -168,6 +178,7 @@ using CMPG_323_Project_2.Models;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager Nav { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDataAccess _data { get; set; }
     }

@@ -1,7 +1,70 @@
 ﻿@page "/main"
 
+@using Microsoft.Extensions.Configuration
+@using DataLibrary
+@using CMPG_323_Project_2.Models
+@inject IDataAccess _data
+@inject IConfiguration _config
+@inject NavigationManager Nav
+
 <h3>Main</h3>
+<label>Welcome, @Uname </label> <br />
+  <div>
+      <img src="@Image" style="width: 250px; height: 250px"/> <br />
+      <InputFile  OnChange="@FileChange"  ></InputFile>
+      <button @onclick="@Upload">Upload</button>
+
+      <label >@Convert.ToString(user.Profilepic) </label>
+
+  </div>
+
+<p style="width : 800px; overflow-wrap : break-word">@Image</p>
 
 @code {
+    
+    ImageModel Images = new ImageModel();
+    UsersModel user = new UsersModel();
+    List<ImageModel> pictures;
+    List<UsersModel> users;
+    private string Uname = Login.Name;
+    private string pic;
+    public static string Image { get; set; }
+    
 
+    protected override async Task OnInitializedAsync()
+    {
+        
+        string sql = "select * from images";
+        pictures = await _data.LoadData<ImageModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        string sql2 = "select ProfilePicture from useraccount WHERE Username = @username";
+        users = await _data.LoadData<UsersModel, dynamic>(sql2, new { username = Uname }, _config.GetConnectionString("default"));
+
+        Image =  $"data:image/png;base64,{users[0].GetType()}";
+
+
+
+
+    }
+
+    private async Task FileChange(InputFileChangeEventArgs fileChangeEvent)
+    {
+        var file = fileChangeEvent.File;
+
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+        pic = Convert.ToBase64String(buffer);
+        Image = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+
+        string sql = "insert into images(image_name,Image,Username) values (@imagename,@image,@username); ";
+
+
+    }
+
+    private async Task Upload()
+    {
+        string sql2 = "update useraccount SET profilepicture = @image WHERE Username = @username";
+
+        await _data.SaveData(sql2, new { image = Image, username = Uname }, _config.GetConnectionString("default"));
+    }
 }

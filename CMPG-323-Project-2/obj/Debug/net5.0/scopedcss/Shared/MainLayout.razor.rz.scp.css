@@ -21,7 +21,7 @@
     align-items: center;
 }
 
-    .top-row[b-kqz724twsc]  a, .top-row .btn-link[b-kqz724twsc] {
+    .top-row a[b-kqz724twsc], .top-row .btn-link[b-kqz724twsc] {
         white-space: nowrap;
         margin-left: 1.5rem;
     }
