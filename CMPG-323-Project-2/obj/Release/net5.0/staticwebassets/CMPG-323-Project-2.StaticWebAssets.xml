@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\obj\Release\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="_content/BlazorInputFile" Path="C:\Users\Deadman\.nuget\packages\blazorinputfile\0.2.0\build\..\staticwebassets\" />
+</StaticWebAssets>

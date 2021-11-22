@@ -149,6 +149,7 @@ using CMPG_323_Project_2.Models;
         {
             if (u.Username == user.Username && u.Password == user.Password)
             {
+                incorrect = false;
                 Name = u.Username;
                 Profilepic = u.Profilepicture;
                 Nav.NavigateTo("/main");
@@ -156,7 +157,7 @@ using CMPG_323_Project_2.Models;
             else
             {
                 incorrect = true;
-                return;
+                
             }
         }
     }

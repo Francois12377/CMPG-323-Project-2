@@ -72,7 +72,7 @@
                 <label for="email">E-mail adress:</label>&nbsp
                 <input type="email" id="textemail" @bind-value="user.Email" /><br />
                 <label for="Birth">Date of birth:</label>&nbsp
-                <input @bind-value="user.DOB" placeholder="YYYY-MM-DD" /><br />
+                <input type="text" @bind-value="user.DOB" placeholder="YYYY-MM-DD"/><br />
                 <label for="Pass">Password:</label>&nbsp
                 <input type="password" id="btnpass" @bind-value="user.Password" /><br />
                 <label for="ConPass">Confirm Password:</label>&nbsp
@@ -122,6 +122,7 @@
         {
             if (u.Username == user.Username && u.Password == user.Password)
             {
+                incorrect = false;
                 Name = u.Username;
                 Profilepic = u.Profilepicture;
                 Nav.NavigateTo("/main");
@@ -129,7 +130,7 @@
             else
             {
                 incorrect = true;
-                return;
+                
             }
         }
     }

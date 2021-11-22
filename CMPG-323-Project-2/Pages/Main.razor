@@ -7,9 +7,9 @@
 @inject IConfiguration _config
 @inject NavigationManager Nav
 
-<h3>Main</h3>
+
 <body style="background :none">
-    <label>Welcome, @Uname </label> <br />
+    <h1>Welcome, @Uname</h1> <br />
     <div class="rounded">
         <img src="@Image" style="width: 250px; height: 250px" /> <br />
         <InputFile OnChange="@FileChange"></InputFile>
@@ -26,27 +26,26 @@
         {
             <div style=" border:double ; display:flex; flex:auto; ">
                 <img src="@I.Image" style="height : 250px ; width : 250px ; padding : 5px" />
-
-
                 <label>Name : @I.Image_Name</label>
             </div>
         }
         @if (copyimage)
         {
-            <label  style="color : darkred">This Image Name has already been taken. Sorry!!!</label>
+            <label style="color : darkred">This Image Name has already been taken. Sorry!!!</label>
         }
         @if (nullvalue)
         {
-            <label  style="color : darkred">Please input name of image to be deleted.</label>
+            <label style="color : darkred">Please input name of image to be deleted.</label>
         }
         @if (notfound)
         {
-            <label  style="color : darkred">Image name not found.</label>
+            <label style="color : darkred">Image name not found.</label>
         }
         <input type="text" @bind-value="Images.Image_Name" placeholder="Type the Name of the image you want to delete" />
         <button class="btn btn-outline-primary" @onclick="@Deleteenable">Delete</button>
-
-        <InputFile OnChange="@UploadImages" multiple />
+        <div style="display : flex; flex-direction:row">
+            <label>Select Image(s) to be uploaded: </label><InputFile OnChange="@UploadImages" multiple />
+        </div>
     </div>
 </body>
 
@@ -148,12 +147,12 @@
             {
                 notfound = false;
                 nullvalue = true;
-                return;
+                
             }else if (Images.Image_Name != I.Image_Name)
             {
                 nullvalue = false;
                 notfound = true;
-                return;
+                
             }
         }
     }

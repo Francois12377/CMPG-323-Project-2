@@ -112,7 +112,7 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 55 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+#line 54 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
        
 
     ImageModel Images = new ImageModel();
@@ -127,7 +127,6 @@ using CMPG_323_Project_2.Models;
     public bool nullvalue = false;
     public bool notfound = false;
     public string picname;
-    public static byte[] ArImages { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -210,12 +209,12 @@ using CMPG_323_Project_2.Models;
             {
                 notfound = false;
                 nullvalue = true;
-                return;
+                
             }else if (Images.Image_Name != I.Image_Name)
             {
                 nullvalue = false;
                 notfound = true;
-                return;
+                
             }
         }
     }
