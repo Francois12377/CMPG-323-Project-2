@@ -112,9 +112,9 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 23 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
+#line 55 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Main.razor"
        
-    
+
     ImageModel Images = new ImageModel();
     UsersModel user = new UsersModel();
     List<ImageModel> pictures;
@@ -122,21 +122,24 @@ using CMPG_323_Project_2.Models;
     private string Uname = Login.Name;
     private string pic;
     public static string Image { get; set; }
-    
+    public static string Image2 { get; set; }
+    public bool copyimage = false;
+    public bool nullvalue = false;
+    public bool notfound = false;
+    public string picname;
+    public static byte[] ArImages { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        
-        string sql = "select * from images";
-        pictures = await _data.LoadData<ImageModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
 
-        string sql2 = "select ProfilePicture from useraccount WHERE Username = @username";
+        string sql = "select * from images WHERE Username = @username";
+        pictures = await _data.LoadData<ImageModel, dynamic>(sql, new {username = Uname }, _config.GetConnectionString("default"));
+
+        string sql2 = "select ProfilePicture from useraccount ";
         users = await _data.LoadData<UsersModel, dynamic>(sql2, new { username = Uname }, _config.GetConnectionString("default"));
 
-        Image =  $"data:image/png;base64,{users[0].GetType()}";
-
-
-
+        Image =  Login.Profilepic;
 
     }
 
@@ -146,11 +149,35 @@ using CMPG_323_Project_2.Models;
 
         var buffer = new byte[file.Size];
         await file.OpenReadStream(1512000).ReadAsync(buffer);
-        pic = Convert.ToBase64String(buffer);
+        pic = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
         Image = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
 
-        string sql = "insert into images(image_name,Image,Username) values (@imagename,@image,@username); ";
+    private async Task UploadImages(InputFileChangeEventArgs fileChangeEvent)
+    {
 
+        var file = fileChangeEvent.GetMultipleFiles();
+        for(int i = 0; i < file.Count; i++)
+        {
+            var buffer = new byte[file[i].Size];
+            await file[i].OpenReadStream(1512000).ReadAsync(buffer);
+            Image2 = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+            foreach(var I in pictures)
+            {
+                if (file[i].Name == I.Image_Name)
+                {
+                    copyimage = true;
+                    return;
+                }
+            }
+
+            string sql = "insert into images(image_name,Image,Username) values (@imagename,@image,@username); ";
+            await _data.SaveData(sql, new {imagename = file[i].Name, image = Image2, username = Uname}, _config.GetConnectionString("default"));
+
+            string sql2 = "select * from images WHERE Username = @username";
+            pictures = await _data.LoadData<ImageModel, dynamic>(sql2, new { username = Uname }, _config.GetConnectionString("default"));
+            copyimage = false;
+        }
 
     }
 
@@ -159,6 +186,38 @@ using CMPG_323_Project_2.Models;
         string sql2 = "update useraccount SET profilepicture = @image WHERE Username = @username";
 
         await _data.SaveData(sql2, new { image = Image, username = Uname }, _config.GetConnectionString("default"));
+
+        Login.Profilepic = pic;
+    }
+
+    public async Task Deleteenable()
+    {
+        foreach(var I in pictures)
+        {
+            if (Images.Image_Name == I.Image_Name)
+            {
+                nullvalue = false;
+                string sql = "DELETE FROM images WHERE image_name = @imagename";
+                await _data.SaveData(sql, new { imagename = Images.Image_Name }, _config.GetConnectionString("default"));
+
+                string sql2 = "select * from images WHERE Username = @username";
+                pictures = await _data.LoadData<ImageModel, dynamic>(sql2, new { username = Uname }, _config.GetConnectionString("default"));
+                notfound = false;
+                nullvalue = false;
+                return;
+
+            }else if (Images.Image_Name == null || Images.Image_Name == "")
+            {
+                notfound = false;
+                nullvalue = true;
+                return;
+            }else if (Images.Image_Name != I.Image_Name)
+            {
+                nullvalue = false;
+                notfound = true;
+                return;
+            }
+        }
     }
 
 #line default

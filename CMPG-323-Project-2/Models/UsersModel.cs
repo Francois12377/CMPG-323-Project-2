@@ -27,8 +27,8 @@ namespace CMPG_323_Project_2.Models
 
         [Required]
         
-        public string Age { get; set; }
+        public DateTime DOB { get; set; }
 
-        public string Profilepic { get; set; }
+        public String Profilepicture { get; set; }
     }
 }

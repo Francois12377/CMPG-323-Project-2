@@ -112,7 +112,7 @@ using CMPG_323_Project_2.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 84 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
+#line 89 "C:\Users\Deadman\Desktop\CMPG323 - Project 2\CMPG-323-Project-2\CMPG-323-Project-2\Pages\Login.razor"
        
     UsersModel user = new UsersModel();
 
@@ -121,7 +121,9 @@ using CMPG_323_Project_2.Models;
     private bool showlogin = true;
     private bool YES = false;
     public static string Name;
-    
+    public static string Profilepic;
+    private bool incorrect;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -136,32 +138,28 @@ using CMPG_323_Project_2.Models;
 
         string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
-        await _data.SaveData(sql, new { Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age }, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { Username = user.Username, Password = user.Password, Email = user.Email, Age = user.DOB }, _config.GetConnectionString("default"));
     }
 
     void TryLogin()
     {
-     
+
 
         foreach (var u in users)
         {
-            if (u.Username == user.Username)
+            if (u.Username == user.Username && u.Password == user.Password)
             {
                 Name = u.Username;
-                Main.Image = Convert.ToString(u.Profilepic)  ;
+                Profilepic = u.Profilepicture;
                 Nav.NavigateTo("/main");
             }
-                else
-                {
-                  
-                }
+            else
+            {
+                incorrect = true;
+                return;
+            }
         }
     }
-
-
-
-
-
 
     void TrySignup()
     {

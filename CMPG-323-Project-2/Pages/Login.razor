@@ -35,24 +35,28 @@
 
     @if (showlogin)
     {
-        <div id="loginDiv">
-            <h1>LOGIN</h1>
-            <label for="User">Username :</label> &nbsp
-            <input type="text" @bind-value="user.Username" />
-            <br />
-            <label for="Pass"> Password :</label> &nbsp
-            <input type="password" />
-            <br />
+<div id="loginDiv">
+    <h1>LOGIN</h1>
+    <label for="User">Username :</label> &nbsp
+    <input type="text" @bind-value="user.Username" />
+    <br />
+    <label for="Pass"> Password :</label> &nbsp
+    <input type="password" @bind-value="user.Password"/>
+    <br />
+    @if (incorrect)
+    {
+        <label style="color : red">Username or password is Incorrect</label>
+    }
 
-            <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
-            <button @onclick="TrySignup" id="btnsignup" class="btn btn-primary"> Sign up </button>
-
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-        </div>
+    <button @onclick="TryLogin" id="btnlogin" class="btn btn-primary"> Login </button>
+    <button @onclick="TrySignup" id="btnsignup" class="btn btn-primary"> Sign up </button>
+    <p></p>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
     }
     @if (showsignup)
     {
@@ -68,7 +72,7 @@
                 <label for="email">E-mail adress:</label>&nbsp
                 <input type="email" id="textemail" @bind-value="user.Email" /><br />
                 <label for="Birth">Date of birth:</label>&nbsp
-                <input @bind-value="user.Age" placeholder="YYYY-MM-DD" /><br />
+                <input @bind-value="user.DOB" placeholder="YYYY-MM-DD" /><br />
                 <label for="Pass">Password:</label>&nbsp
                 <input type="password" id="btnpass" @bind-value="user.Password" /><br />
                 <label for="ConPass">Confirm Password:</label>&nbsp
@@ -77,6 +81,7 @@
                 <button @onclick="cancel" class="btn btn-primary">Cancel</button>
             </div>
         </EditForm>
+        
     }
 
 </body>
@@ -89,7 +94,9 @@
     private bool showlogin = true;
     private bool YES = false;
     public static string Name;
-    
+    public static string Profilepic;
+    private bool incorrect;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,32 +111,28 @@
 
         string sql = "insert into useraccount (Username, Password, Email, DOB) values (@Username, @Password, @Email, @Age); ";
 
-        await _data.SaveData(sql, new { Username = user.Username, Password = user.Password, Email = user.Email, Age = user.Age }, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { Username = user.Username, Password = user.Password, Email = user.Email, Age = user.DOB }, _config.GetConnectionString("default"));
     }
 
     void TryLogin()
     {
-     
+
 
         foreach (var u in users)
         {
-            if (u.Username == user.Username)
+            if (u.Username == user.Username && u.Password == user.Password)
             {
                 Name = u.Username;
-                Main.Image = Convert.ToString(u.Profilepic)  ;
+                Profilepic = u.Profilepicture;
                 Nav.NavigateTo("/main");
             }
-                else
-                {
-                  
-                }
+            else
+            {
+                incorrect = true;
+                return;
+            }
         }
     }
-
-
-
-
-
 
     void TrySignup()
     {
